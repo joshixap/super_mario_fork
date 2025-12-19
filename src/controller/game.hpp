@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 #include "collisionable.hpp"
 #include "map_movable.hpp"
@@ -16,6 +17,8 @@ namespace biv {
 			std::vector<Collisionable*> collisionable_objs;
 			std::vector<Movable*> movable_objs;
 			
+			std::function<void(Collisionable*)> on_collisionable_killed;
+			
 			Mario* mario = nullptr;
 			
 			bool is_finished_ = false;
@@ -23,6 +26,7 @@ namespace biv {
 			
 		public:
 			Game();
+			void set_on_collisionable_killed(std::function<void(Collisionable*)> cb);
 			
 			void add_collisionable(Collisionable*);
 			void add_map_movable(MapMovable*);

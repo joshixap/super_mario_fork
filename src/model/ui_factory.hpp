@@ -13,10 +13,19 @@ namespace biv {
 			UIFactory(Game* game) : game(game) {}
 
 		public:
+			virtual ~UIFactory() = default;
+			virtual void tick_cleanup() {}
+			
 			virtual void clear_data() = 0;
 			virtual void create_box(
 				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_enemy(
+				const Coord& top_left, const int width, const int height) = 0;
+			virtual void create_movable_enemy(
+				const Coord& top_left, const int width, const int height) = 0;
+			virtual void create_flyable_enemy(
+				const Coord& top_left, const int width, const int height) = 0;
+			virtual void create_jumpable_enemy(
 				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_full_box(
 				const Coord& top_left, const int width, const int height) = 0;

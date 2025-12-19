@@ -1,10 +1,15 @@
 #include "game.hpp"
 
+#include <utility>
 #include <algorithm>
 
 using biv::Game;
 
 Game::Game() {}
+
+void Game::set_on_collisionable_killed(std::function<void(Collisionable*)> cb) {
+	on_collisionable_killed = std::move(cb);
+}
 
 void Game::add_collisionable(Collisionable* obj) {
 	collisionable_objs.push_back(obj);
@@ -46,6 +51,15 @@ void Game::check_mario_collision() {
 				break;
 			} else if (!obj->is_active()) {
 				// TODO
+				if (on_collisionable_killed) {
+					on_collisionable_killed(obj);
+				}
+				if (auto m = dynamic_cast<Movable*>(obj)) {
+					remove_movable(m);
+				}
+				if (auto mm = dynamic_cast<MapMovable*>(obj)) {
+					remove_map_movable(mm);
+				}
 				collisionable_objs[i] = collisionable_objs.back();
 				collisionable_objs.pop_back();
 				i--;
